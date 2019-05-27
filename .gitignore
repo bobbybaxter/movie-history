@@ -2,3 +2,5 @@ package-lock.json
 node_modules/
 dist/
 build/
+.vscode
+src/javascripts/helpers/apiKeys.json
