@@ -1,0 +1,17 @@
+{
+  "genre1": {
+    "type": "Adventure"
+  },
+  "genre2": {
+    "type": "Comedy"
+  },
+  "genre3": {
+    "type": "Drama"
+  },
+  "genre4": {
+    "type": "Family"
+  },
+  "genre5": {
+    "type": "Fantasy"
+  }
+}
