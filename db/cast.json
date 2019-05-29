@@ -1,0 +1,58 @@
+{
+  "cast1": {
+    "firstName": "Arthur A.",
+    "lastName": "Seidelman",
+    "isActor": false,
+    "isDirector": true,
+    "movieId": ""
+  },
+  "cast2": {
+    "firstName": "Arnold",
+    "lastName": "Schwarzenegger",
+    "isActor": true,
+    "isDirector": false,
+    "movieId": ""
+  },
+  "cast3": {
+    "firstName": "Arnold",
+    "lastName": "Stang",
+    "isActor": true,
+    "isDirector": false,
+    "movieId": ""
+  },
+  "cast4": {
+    "firstName": "Deborah",
+    "lastName": "Loomis",
+    "isActor": true,
+    "isDirector": false,
+    "movieId": ""
+  },
+  "cast5": {
+    "firstName": "Bob",
+    "lastName": "Rafelson",
+    "isActor": false,
+    "isDirector": true,
+    "movieId": ""
+  },
+  "cast6": {
+    "firstName": "Jeff",
+    "lastName": "Bridges",
+    "isActor": true,
+    "isDirector": false,
+    "movieId": ""
+  },
+  "cast7": {
+    "firstName": "Sally",
+    "lastName": "Field",
+    "isActor": true,
+    "isDirector": false,
+    "movieId": ""
+  },
+  "cast8": {
+    "firstName": "Arnold",
+    "lastName": "Schwarzenegger",
+    "isActor": true,
+    "isDirector": false,
+    "movieId": ""
+  }
+}

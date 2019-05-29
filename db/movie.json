@@ -1,0 +1,12 @@
+{
+  "movie1": {
+    "title": "Hercules in New York",
+    "mpaaRating": "G",
+    "imageUrl": "https://www.imdb.com/title/tt0065832/mediaviewer/rm1124677376"
+  },
+  "movie2": {
+    "title": "Stay Hungry",
+    "mpaaRating": "R",
+    "imageUrl": "https://www.imdb.com/title/tt0075268/mediaviewer/rm3922548736"
+  }
+}
