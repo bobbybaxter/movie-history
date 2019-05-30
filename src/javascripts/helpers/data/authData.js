@@ -1,9 +1,9 @@
 import firebase from 'firebase/app';
 
-// import birthday from '../../components/birthday/birthday';
+import allMovies from '../../components/allMovies/allMovies';
 
 const authDiv = document.getElementById('auth');
-const moviesDiv = document.getElementById('movies');
+const moviesDiv = document.getElementById('all-movies');
 const moviesNavbar = document.getElementById('navbar-button-movies');
 const authNavbar = document.getElementById('navbar-button-auth');
 const logoutNavbar = document.getElementById('navbar-button-logout');
@@ -16,7 +16,7 @@ const checkLoginStatus = () => {
       moviesNavbar.classList.remove('hide');
       authNavbar.classList.add('hide');
       logoutNavbar.classList.remove('hide');
-      // birthday.printBirthday(user.uid);
+      allMovies.printAllMovies();
     } else {
       authDiv.classList.remove('hide');
       moviesDiv.classList.add('hide');
