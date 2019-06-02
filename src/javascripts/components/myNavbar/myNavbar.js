@@ -2,22 +2,34 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 
 import allMovies from '../allMovies/allMovies';
+import watchlist from '../watchlist/watchlist';
 
 const movieFormDiv = document.getElementById('add-movie-form');
 const authDiv = document.getElementById('auth');
 const moviesDiv = document.getElementById('movies');
+const watchlistDiv = document.getElementById('myWatchlist');
 
 const addMovieEvent = () => {
-  movieFormDiv.classList.remove('hide');
   authDiv.classList.add('hide');
+  movieFormDiv.classList.remove('hide');
   moviesDiv.classList.add('hide');
+  watchlistDiv.classList.add('hide');
 };
 
 const allMoviesEvent = () => {
-  movieFormDiv.classList.add('hide');
   authDiv.classList.add('hide');
+  movieFormDiv.classList.add('hide');
   moviesDiv.classList.remove('hide');
+  watchlistDiv.classList.add('hide');
   allMovies.printAllMovies();
+};
+
+const watchlistEvent = () => {
+  authDiv.classList.add('hide');
+  movieFormDiv.classList.add('hide');
+  moviesDiv.classList.add('hide');
+  watchlistDiv.classList.remove('hide');
+  watchlist.printWatchlist(firebase.auth().currentUser.uid);
 };
 
 const navbarEvents = () => {
@@ -30,6 +42,8 @@ const navbarEvents = () => {
         addMovieEvent();
       } else if (e.target.id === 'navbar-button-movies') {
         allMoviesEvent();
+      } else if (e.target.id === 'navbar-button-watchlist') {
+        watchlistEvent();
       }
     });
   }

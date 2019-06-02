@@ -23,6 +23,9 @@
             <a id="navbar-button-movies" href="#" class="nav-link hide">All Movies</a>
           </li>
           <li class="nav-item">
+            <a id="navbar-button-watchlist" href="#" class="nav-link hide">My Watchlist</a>
+          </li>
+          <li class="nav-item">
             <a id="navbar-button-add-movie" href="#" class="nav-link hide">Add New Movie</a>
           </li>
           <li class="nav-item">
@@ -34,8 +37,11 @@
   <div id="auth"></div>
   <div id="movies" class="container">
     <h2>All Movies</h2>
-    <div id="all-movies" class="d-flex flex-row">
+    <div id="all-movies" class="d-flex flex-row"></div>
   </div>
+  <div id="myWatchlist" class="container hide">
+    <h2>My Watchlist</h2>
+    <div id="watchlist-movies" class="d-flex flex-row"></div>
   </div>
   <div id="add-movie-form" class="hide">
     <form class="col-6 offset-3">

@@ -1,10 +1,8 @@
 // import firebase from 'firebase/app';
-import 'firebase/auth';
+// import 'firebase/auth';
 
-import allMoviesData from '../../helpers/data/allMoviesData';
+import watchlistData from '../../helpers/data/watchlistData';
 import util from '../../helpers/util';
-
-import watchlist from '../watchlist/watchlist';
 
 const watchlistButtonEvents = (e) => {
   const watchlistBtnBg = e.target.previousElementSibling.previousElementSibling;
@@ -12,7 +10,7 @@ const watchlistButtonEvents = (e) => {
     e.target.classList.remove('fa-plus');
     e.target.classList.add('fa-check');
     watchlistBtnBg.classList.add('greenBtn');
-    watchlist.addToWatchlist(e.target);
+    // watchlist.addToWatchlist(e.target);
   } else {
     e.target.classList.add('fa-plus');
     e.target.classList.remove('fa-check');
@@ -46,8 +44,8 @@ const eventListeners = () => {
   }
 };
 
-const printAllMovies = () => {
-  allMoviesData.getAllMovies()
+const printWatchlist = (uid) => {
+  watchlistData.getWatchlistByUid(uid)
     .then((movies) => {
       let domString = '';
       movies.forEach((movie) => {
@@ -71,10 +69,10 @@ const printAllMovies = () => {
         domString += '</div>';
         domString += '</div>';
       });
-      util.printToDom('all-movies', domString);
+      util.printToDom('watchlist-movies', domString);
       eventListeners();
     })
     .catch(err => console.error('could not print movies', err));
 };
 
-export default { printAllMovies };
+export default { printWatchlist };
