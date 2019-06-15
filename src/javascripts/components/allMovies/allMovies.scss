@@ -15,7 +15,6 @@
   right: 1%;
 }
 
-
 /****** Style Star Rating Widget *****/
 /* borrowed from: https://codepen.io/jamesbarnett/pen/vlpkh */
 fieldset, label { margin: 0; padding: 0; }
@@ -27,7 +26,7 @@ fieldset, label { margin: 0; padding: 0; }
 
 .rating > input { display: none; } 
 .rating > label:before { 
-  margin: 5px;
+  margin: 1px;
   font-size: 1.25em;
   font-family: "Font Awesome 5 Free";
   display: inline-block;
