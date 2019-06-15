@@ -22,39 +22,11 @@ const setIsWatchedStatus = (s) => {
   return isWatched;
 };
 
-// const getAllMovies = () => {
-//   allMoviesData.getAllMovies()
-//     .then(movies => console.error(movies))
-//     .catch(err => console.error('didnt get all da movies', err));
-// };
-
-// const setWatchlistId = (target) => {
-//   // MAYBE TRY TO PAIR THE MOVIE FIRST THEN SYNC THE DATA???
-//   // const watchlistDiv = target.closest('.movie-card');
-//   // const movieId = target.closest('span').id.split('.')[1];
-//   const allMovies = getAllMovies();
-//   console.error('target', target);
-//   console.error('allMovies', allMovies);
-//   // allMoviesData.getAllMovies()
-//   //   .then(allMovies => watchlistData.getWatchlistByUid(firebase.auth().currentUser.uid)
-//   //     .then((watchlistMovie) => {
-//   //       const syncedMovies = smash.uniqueMovieView(allMovies, watchlistMovie);
-//   //       console.error(syncedMovies);
-//   //       return syncedMovies;
-//   //     }))
-//   //   .then((syncedMovies) => {
-//   //     const neededMovie = syncedMovies.filter(movie => movie.id === movieId);
-//   //     console.error(neededMovie.watchlistId, neededMovie);
-//   //     $(watchlistDiv).attr('id', neededMovie.watchlistId);
-//   //   })
-//   // .catch(err => console.error('didnt make unique movie list', err));
-// };
-
 const changeButtonToWatched = (e, watchlistBtnBg) => {
   const buttonSpan = e.target.closest('span');
   buttonSpan.classList.remove('off-watchlist');
   buttonSpan.classList.add('on-watchlist');
-  console.error(buttonSpan.classList);
+  // console.error(buttonSpan.classList);
   e.target.classList.remove('fa-plus');
   e.target.classList.add('fa-check');
   watchlistBtnBg.classList.add('greenBtn');
@@ -66,7 +38,7 @@ const changeButtonToUnwatched = (e, watchlistBtnBg) => {
   const buttonSpan = e.target.closest('span');
   buttonSpan.classList.add('off-watchlist');
   buttonSpan.classList.remove('on-watchlist');
-  console.error(buttonSpan.classList);
+  // console.error(buttonSpan.classList);
   e.target.classList.add('fa-plus');
   e.target.classList.remove('fa-check');
   watchlistBtnBg.classList.remove('greenBtn');
@@ -120,60 +92,70 @@ const watchlistButtonEvents = (e) => {
     } else {
       // update onWatchlist to false if movie is rated
       watchlistData.editWatchlist(watchlistId, watchlistMovie)
-        .then(changeButtonToUnwatched(e, watchlistBtnBg));
+        .then(() => changeButtonToUnwatched(e, watchlistBtnBg));
     }
     // completion.then(changeButtonToUnwatched(e, watchlistBtnBg));
   }
 };
 
-const getWatchlistStatus = (e) => {
-  let watchlistStatus;
-  const buttonSpan = $(e.target).closest('.movie-card').find('span')[0];
-  console.error(buttonSpan);
-  if (buttonSpan.classList.contains('off-watchlist')) {
-    watchlistStatus = false;
-  } else {
-    watchlistStatus = true;
-  }
-  console.error(watchlistStatus);
-  return watchlistStatus;
-};
-
-// const getWatchlistStatusFromStars = (e) => {
-//   let watchlistStatus;
-//   const buttonSpan = $(e.target).closest('.movie-card').find('span');
-//   if (buttonSpan.classList.contains('on-watchlist')) {
-//     watchlistStatus = true;
-//   } if (buttonSpan.classList.contains('off-watchlist')) {
-//     watchlistStatus = false;
-//   }
-//   return watchlistStatus;
-// };
-
 const radioButtonEvent = (e) => {
   const movieId = e.target.id.split('.')[1];
+  const watchlistBtn = $(e.target).closest('.movie-card').find('span')[0].childNodes[2];
   // const movieId = e.target.closest('watchlist-button').id;
   const starValue = $(e.target).closest('.movie-card').find('input:checked').val();
   const watchlistId = $(e.target).closest('.movie-card').id;
   const isWatched = setIsWatchedStatus(starValue);
-  const onWatchlist = getWatchlistStatus(e);
-  const watchlistMovie = {
-    movieId,
-    uid: firebase.auth().currentUser.uid,
-    rating: starValue,
-    onWatchlist,
-    isWatched,
-  };
-  if (watchlistId === 'undefined') {
-    // add if not in collection
-    watchlistData.addToWatchlist(watchlistMovie);
-    // eslint-disable-next-line no-use-before-define
-    makeUniqueMovieList(firebase.auth().currentUser.uid);
+  // const onWatchlist = getWatchlistStatus(e);
+  if (watchlistBtn.classList.contains('fa-plus')) {
+    const watchlistMovie = {
+      movieId,
+      uid: firebase.auth().currentUser.uid,
+      rating: starValue,
+      onWatchlist: false,
+      isWatched,
+    };
+    if (watchlistId === 'undefined') {
+      // add if not in collection
+      watchlistData.addToWatchlist(watchlistMovie)
+        .then(() => {
+        // eslint-disable-next-line no-use-before-define
+          makeUniqueMovieList(firebase.auth().currentUser.uid);
+        });
+    } else {
+      // update if in collection
+      watchlistData.editWatchlist(watchlistId, watchlistMovie)
+        .then(() => {
+        // eslint-disable-next-line no-use-before-define
+          makeUniqueMovieList(firebase.auth().currentUser.uid);
+        });
+    }
   } else {
-    // update if in collection
-    watchlistData.editWatchlist(watchlistId, watchlistMovie);
-    // eslint-disable-next-line no-use-before-define
-    makeUniqueMovieList(firebase.auth().currentUser.uid);
+    // builds movie object, then removes from or updates watchlist
+    const watchlistMovie = {
+      movieId,
+      uid: firebase.auth().currentUser.uid,
+      rating: starValue,
+      onWatchlist: true,
+      isWatched,
+    };
+    // let completion;
+    if (watchlistId === 'undefined') {
+      // delete from collection if movie is not rated
+      watchlistData.removeFromWatchlist(watchlistId)
+        .then(() => {
+          // eslint-disable-next-line no-use-before-define
+          makeUniqueMovieList(firebase.auth().currentUser.uid);
+        })
+        .catch(err => console.error('didnt remove from watchlist', err));
+    } else {
+      // update onWatchlist to false if movie is rated
+      watchlistData.editWatchlist(watchlistId, watchlistMovie)
+        .then(() => {
+        // eslint-disable-next-line no-use-before-define
+          makeUniqueMovieList(firebase.auth().currentUser.uid);
+        });
+    // completion.then(changeButtonToUnwatched(e, watchlistBtnBg));
+    }
   }
 };
 
