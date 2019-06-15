@@ -26,7 +26,6 @@ const changeButtonToWatched = (e, watchlistBtnBg) => {
   const buttonSpan = e.target.closest('span');
   buttonSpan.classList.remove('off-watchlist');
   buttonSpan.classList.add('on-watchlist');
-  // console.error(buttonSpan.classList);
   e.target.classList.remove('fa-plus');
   e.target.classList.add('fa-check');
   watchlistBtnBg.classList.add('greenBtn');
@@ -54,6 +53,7 @@ const watchlistButtonEvents = (e) => {
   const isWatched = setIsWatchedStatus(starValue);
   if (e.target.classList.contains('fa-plus')) {
     // builds movie object, then adds to or updates watchlist
+    console.error(watchlistId);
     const watchlistMovie = {
       movieId: movieId.split('.')[1],
       uid: firebase.auth().currentUser.uid,
@@ -103,7 +103,7 @@ const radioButtonEvent = (e) => {
   const watchlistBtn = $(e.target).closest('.movie-card').find('span')[0].childNodes[2];
   // const movieId = e.target.closest('watchlist-button').id;
   const starValue = $(e.target).closest('.movie-card').find('input:checked').val();
-  const watchlistId = $(e.target).closest('.movie-card').id;
+  const watchlistId = e.target.closest('.movie-card').id;
   const isWatched = setIsWatchedStatus(starValue);
   // const onWatchlist = getWatchlistStatus(e);
   if (watchlistBtn.classList.contains('fa-plus')) {
@@ -182,7 +182,7 @@ const printAllMovies = (movies) => {
     domString += `<i class="fas ${movie.onWatchlist === true ? 'fa-check' : 'fa-plus'} fa-stack-1x"></i>`;
     domString += '</span>';
     domString += '</div>';
-    domString += '<div class="card-body d-flex p-1 justify-content-center align-items-end">';
+    domString += '<div class="card-body d-flex p-0 justify-content-center align-items-end">';
     domString += '<fieldset class="rating">';
     domString += `<input type="radio" id="star5.${movie.id}" name="rating.${movie.id}" value="5" class="ratingButton" ${movie.rating === '5' ? 'checked' : ''} /><label class="full" for="star5.${movie.id}" title="5 stars"></label>`;
     domString += `<input type="radio" id="star4.${movie.id}" name="rating.${movie.id}" value="4" class="ratingButton" ${movie.rating === '4' ? 'checked' : ''} /><label class="full" for="star4.${movie.id}" title="4 stars"></label>`;
