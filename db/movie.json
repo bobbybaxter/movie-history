@@ -8,5 +8,100 @@
     "title": "Stay Hungry",
     "mpaaRating": "R",
     "imageUrl": "https://upload.wikimedia.org/wikipedia/en/2/28/Stay_Hungry_movie_poster.jpg"
+  },
+  "movie3": {
+    "title": "Pumping Iron",
+    "mpaaRating": "PG",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/6/61/Pumping_Iron_movie_poster.jpg"
+  },
+  "movie4": {
+    "title": "Conan the Barbarian",
+    "mpaaRating": "R",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/8/81/Conan_the_Barbarian_by_Renato_Casaro.jpg"
+  },
+  "movie5": {
+    "title": "Conan the Destroyer",
+    "mpaaRating": "PG",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/a/ae/Conan_the_destroyer.jpg"
+  },
+  "movie6": {
+    "title": "The Terminator",
+    "mpaaRating": "R",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/7/70/Terminator1984movieposter.jpg"
+  },
+  "movie7": {
+    "title": "Red Sonja",
+    "mpaaRating": "PG-13",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/0/06/Red_sonja_film_poster.jpg"
+  },
+  "movie8": {
+    "title": "Commando",
+    "mpaaRating": "R",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/d/d9/Commandoposter.jpg"
+  },
+  "movie9": {
+    "title": "Predator",
+    "mpaaRating": "R",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/9/95/Predator_Movie.jpg"
+  },
+  "movie10": {
+    "title": "The Running Man",
+    "mpaaRating": "R",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/2/2d/The_Running_Man_%281987%29_poster.jpg"
+  },
+  "movie11": {
+    "title": "Red Heat",
+    "mpaaRating": "R",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/a/af/Red_Heat.jpg"
+  },
+  "movie12": {
+    "title": "Twins",
+    "mpaaRating": "PG",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/6/6b/Twins_Poster.jpg"
+  },
+  "movie13": {
+    "title": "Total Recall",
+    "mpaaRating": "R",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/f/f9/Total_recall.jpg"
+  },
+  "movie14": {
+    "title": "Kindergarten Cop",
+    "mpaaRating": "PG-13",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/3/36/Kindergarten_Cop_film.jpg"
+  },
+  "movie15": {
+    "title": "Terminator 2: Judgment Day",
+    "mpaaRating": "R",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/8/85/Terminator2poster.jpg"
+  },
+  "movie16": {
+    "title": "Last Action Hero",
+    "mpaaRating": "PG-13",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/0/0e/Last_action_hero_ver2.jpg"
+  },
+  "movie17": {
+    "title": "True Lies",
+    "mpaaRating": "R",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/8/81/True_Lies_poster.png"
+  },
+  "movie18": {
+    "title": "Junior",
+    "mpaaRating": "PG-13",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/e/e2/Juniorposter.jpg"
+  },
+  "movie19": {
+    "title": "Eraser",
+    "mpaaRating": "R",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/2/2c/Eraser_%28movie_poster%29.jpg"
+  },
+  "movie20": {
+    "title": "Jingle All the Way",
+    "mpaaRating": "PG",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/c/c4/Jingle_All_the_Way_poster.JPG"
+  },
+  "movie21": {
+    "title": "Batman & Robin",
+    "mpaaRating": "PG-13",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/a/a2/Batman_%26_robin_poster.jpg"
   }
 }
