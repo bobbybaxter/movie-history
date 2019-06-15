@@ -19,7 +19,7 @@ const checkLoginStatus = () => {
       logoutNavbar.classList.remove('hide');
       moviesNavbar.classList.remove('hide');
       watchlistNavbar.classList.remove('hide');
-      allMovies.printAllMovies();
+      allMovies.makeUniqueMovieList(firebase.auth().currentUser.uid);
       authDiv.classList.add('hide');
       moviesDiv.classList.remove('hide');
     } else {

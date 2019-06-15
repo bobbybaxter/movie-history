@@ -21,7 +21,7 @@ const allMoviesEvent = () => {
   movieFormDiv.classList.add('hide');
   moviesDiv.classList.remove('hide');
   watchlistDiv.classList.add('hide');
-  allMovies.printAllMovies();
+  allMovies.makeUniqueMovieList(firebase.auth().currentUser.uid);
 };
 
 const watchlistEvent = () => {
@@ -29,7 +29,7 @@ const watchlistEvent = () => {
   movieFormDiv.classList.add('hide');
   moviesDiv.classList.add('hide');
   watchlistDiv.classList.remove('hide');
-  watchlist.printWatchlist(firebase.auth().currentUser.uid);
+  watchlist.makeUniqueMovieList(firebase.auth().currentUser.uid);
 };
 
 const navbarEvents = () => {
