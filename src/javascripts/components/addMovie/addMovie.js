@@ -1,3 +1,6 @@
+import firebase from 'firebase/app';
+import 'firebase/auth';
+
 import moviesData from '../../helpers/data/addMovieData';
 import allMovies from '../allMovies/allMovies';
 
@@ -19,7 +22,7 @@ const createNewMovie = (e) => {
       titleInput.value = '';
       mpaaRatingInput.value = '';
       imageUrlInput.value = '';
-      allMovies.printAllMovies();
+      allMovies.makeUniqueMovieList(firebase.auth().currentUser.uid);
     })
     .catch(err => console.error('new movie did not add', err));
 };

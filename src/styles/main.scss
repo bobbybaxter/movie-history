@@ -2,6 +2,7 @@
 @import '~@fortawesome/fontawesome-free/css/all.css';
 @import '../javascripts/components/allMovies/allMovies.scss';
 @import '../javascripts/components/myNavbar/myNavbar.scss';
+@import '../javascripts/components/watchlist/watchlist.scss';
 @import url('https://fonts.googleapis.com/css?family=Open+Sans|Raleway:500&display=swap');
 
 // get more at loading.io
@@ -46,4 +47,6 @@ body {
   color: rgba(255, 255, 255, .8);
 }
 
-
+.greenBtn {
+  color: rgb(45, 236, 45);
+};

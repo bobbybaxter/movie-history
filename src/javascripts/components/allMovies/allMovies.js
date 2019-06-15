@@ -1,35 +1,230 @@
-/* eslint-disable max-len */
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import $ from 'jquery';
+
+import watchlistData from '../../helpers/data/watchlistData';
+
 import allMoviesData from '../../helpers/data/allMoviesData';
 import util from '../../helpers/util';
+import smash from '../../helpers/smash';
 
-const printAllMovies = () => {
-  allMoviesData.getAllMovies()
-    .then((movies) => {
-      let domString = '';
-      movies.forEach((movie) => {
-        domString += '<div class="card movie-card bg-transparent border-0 p-0 col-3 m-2">';
-        domString += '<div class="card-title d-flex p-0 m-0 justify-content-center shadow">';
-        domString += `<img src="${movie.imageUrl}" class="card-img-top"/>`;
-        domString += '<span class="fa-stack topright">';
-        domString += '<i class="fas fa-circle fa-stack-2x fa-inverse"></i>';
-        domString += '<i class="far fa-circle fa-stack-2x"></i>';
-        domString += '<i class="fas fa-plus fa-stack-1x"></i>';
-        domString += '</span>';
-        domString += '</div>';
-        domString += '<div class="card-body d-flex p-1 justify-content-center align-items-end">';
-        domString += '<fieldset class="rating">';
-        domString += `<input type="radio" id="star5-${movie.id}" name="rating-${movie.id}" value="5" /><label class="full" for="star5-${movie.id}" title="5 stars"></label>`;
-        domString += `<input type="radio" id="star4-${movie.id}" name="rating-${movie.id}" value="4" /><label class="full" for="star4-${movie.id}" title="4 stars"></label>`;
-        domString += `<input type="radio" id="star3-${movie.id}" name="rating-${movie.id}" value="3" /><label class="full" for="star3-${movie.id}" title="3 stars"></label>`;
-        domString += `<input type="radio" id="star2-${movie.id}" name="rating-${movie.id}" value="2" /><label class="full" for="star2-${movie.id}" title="2 stars"></label>`;
-        domString += `<input type="radio" id="star1-${movie.id}" name="rating-${movie.id}" value="1" /><label class="full" for="star1-${movie.id}" title="1 star"></label>`;
-        domString += '</fieldset>';
-        domString += '</div>';
-        domString += '</div>';
-      });
-      util.printToDom('all-movies', domString);
-    })
-    .catch(err => console.error('could not print movies', err));
+// import watchlist from '../watchlist/watchlist';
+
+const setIsWatchedStatus = (s) => {
+  let isWatched;
+  let starValue = s;
+  if (starValue === undefined) {
+    starValue = null;
+    isWatched = false;
+  } else {
+    isWatched = true;
+  }
+  return isWatched;
 };
 
-export default { printAllMovies };
+// const getAllMovies = () => {
+//   allMoviesData.getAllMovies()
+//     .then(movies => console.error(movies))
+//     .catch(err => console.error('didnt get all da movies', err));
+// };
+
+// const setWatchlistId = (target) => {
+//   // MAYBE TRY TO PAIR THE MOVIE FIRST THEN SYNC THE DATA???
+//   // const watchlistDiv = target.closest('.movie-card');
+//   // const movieId = target.closest('span').id.split('.')[1];
+//   const allMovies = getAllMovies();
+//   console.error('target', target);
+//   console.error('allMovies', allMovies);
+//   // allMoviesData.getAllMovies()
+//   //   .then(allMovies => watchlistData.getWatchlistByUid(firebase.auth().currentUser.uid)
+//   //     .then((watchlistMovie) => {
+//   //       const syncedMovies = smash.uniqueMovieView(allMovies, watchlistMovie);
+//   //       console.error(syncedMovies);
+//   //       return syncedMovies;
+//   //     }))
+//   //   .then((syncedMovies) => {
+//   //     const neededMovie = syncedMovies.filter(movie => movie.id === movieId);
+//   //     console.error(neededMovie.watchlistId, neededMovie);
+//   //     $(watchlistDiv).attr('id', neededMovie.watchlistId);
+//   //   })
+//   // .catch(err => console.error('didnt make unique movie list', err));
+// };
+
+const changeButtonToWatched = (e, watchlistBtnBg) => {
+  const buttonSpan = e.target.closest('span');
+  buttonSpan.classList.remove('off-watchlist');
+  buttonSpan.classList.add('on-watchlist');
+  console.error(buttonSpan.classList);
+  e.target.classList.remove('fa-plus');
+  e.target.classList.add('fa-check');
+  watchlistBtnBg.classList.add('greenBtn');
+  // eslint-disable-next-line no-use-before-define
+  makeUniqueMovieList(firebase.auth().currentUser.uid);
+};
+
+const changeButtonToUnwatched = (e, watchlistBtnBg) => {
+  const buttonSpan = e.target.closest('span');
+  buttonSpan.classList.add('off-watchlist');
+  buttonSpan.classList.remove('on-watchlist');
+  console.error(buttonSpan.classList);
+  e.target.classList.add('fa-plus');
+  e.target.classList.remove('fa-check');
+  watchlistBtnBg.classList.remove('greenBtn');
+  // eslint-disable-next-line no-use-before-define
+  makeUniqueMovieList(firebase.auth().currentUser.uid);
+};
+
+const watchlistButtonEvents = (e) => {
+  const watchlistBtnBg = e.target.previousElementSibling.previousElementSibling;
+  const movieId = e.target.closest('span').id;
+  const watchlistId = e.target.closest('.movie-card').id;
+  const starValue = $(e.target).closest('.movie-card').find('input:checked').val();
+  const isWatched = setIsWatchedStatus(starValue);
+  if (e.target.classList.contains('fa-plus')) {
+    // builds movie object, then adds to or updates watchlist
+    const watchlistMovie = {
+      movieId: movieId.split('.')[1],
+      uid: firebase.auth().currentUser.uid,
+      rating: starValue,
+      onWatchlist: true,
+      isWatched,
+    };
+    if (watchlistId === 'undefined') {
+      // add if not in collection
+      watchlistData.addToWatchlist(watchlistMovie)
+        .then(changeButtonToWatched(e, watchlistBtnBg));
+    } else {
+      // update if in collection
+      watchlistData.editWatchlist(watchlistId, watchlistMovie)
+        .then(changeButtonToWatched(e, watchlistBtnBg));
+    }
+    // completion.then(changeButtonToWatched(e, watchlistBtnBg));
+  } else {
+    // builds movie object, then removes from or updates watchlist
+    const watchlistMovie = {
+      movieId: movieId.split('.')[1],
+      uid: firebase.auth().currentUser.uid,
+      rating: starValue,
+      onWatchlist: false,
+      isWatched,
+    };
+    // let completion;
+    if (watchlistId === 'undefined') {
+      // delete from collection if movie is not rated
+      watchlistData.removeFromWatchlist(watchlistId)
+        .then(() => {
+          // eslint-disable-next-line no-use-before-define
+          makeUniqueMovieList(firebase.auth().currentUser.uid);
+        })
+        .catch(err => console.error('didnt remove from watchlist', err));
+    } else {
+      // update onWatchlist to false if movie is rated
+      watchlistData.editWatchlist(watchlistId, watchlistMovie)
+        .then(changeButtonToUnwatched(e, watchlistBtnBg));
+    }
+    // completion.then(changeButtonToUnwatched(e, watchlistBtnBg));
+  }
+};
+
+const getWatchlistStatus = (e) => {
+  let watchlistStatus;
+  const buttonSpan = $(e.target).closest('.movie-card').find('span')[0];
+  console.error(buttonSpan);
+  if (buttonSpan.classList.contains('off-watchlist')) {
+    watchlistStatus = false;
+  } else {
+    watchlistStatus = true;
+  }
+  console.error(watchlistStatus);
+  return watchlistStatus;
+};
+
+// const getWatchlistStatusFromStars = (e) => {
+//   let watchlistStatus;
+//   const buttonSpan = $(e.target).closest('.movie-card').find('span');
+//   if (buttonSpan.classList.contains('on-watchlist')) {
+//     watchlistStatus = true;
+//   } if (buttonSpan.classList.contains('off-watchlist')) {
+//     watchlistStatus = false;
+//   }
+//   return watchlistStatus;
+// };
+
+const radioButtonEvent = (e) => {
+  const movieId = e.target.id.split('.')[1];
+  // const movieId = e.target.closest('watchlist-button').id;
+  const starValue = $(e.target).closest('.movie-card').find('input:checked').val();
+  const watchlistId = $(e.target).closest('.movie-card').id;
+  const isWatched = setIsWatchedStatus(starValue);
+  const onWatchlist = getWatchlistStatus(e);
+  const watchlistMovie = {
+    movieId,
+    uid: firebase.auth().currentUser.uid,
+    rating: starValue,
+    onWatchlist,
+    isWatched,
+  };
+  if (watchlistId === 'undefined') {
+    // add if not in collection
+    watchlistData.addToWatchlist(watchlistMovie);
+    // eslint-disable-next-line no-use-before-define
+    makeUniqueMovieList(firebase.auth().currentUser.uid);
+  } else {
+    // update if in collection
+    watchlistData.editWatchlist(watchlistId, watchlistMovie);
+    // eslint-disable-next-line no-use-before-define
+    makeUniqueMovieList(firebase.auth().currentUser.uid);
+  }
+};
+
+const eventListeners = () => {
+  const watchlistButtons = document.getElementsByClassName('watchlist-button');
+  for (let i = 0; i < watchlistButtons.length; i += 1) {
+    watchlistButtons[i].addEventListener('click', watchlistButtonEvents);
+  }
+  const radioButtons = document.getElementsByClassName('ratingButton');
+  for (let j = 0; j < radioButtons.length; j += 1) {
+    radioButtons[j].addEventListener('click', radioButtonEvent);
+  }
+};
+
+const printAllMovies = (movies) => {
+  let domString = '';
+  movies.forEach((movie) => {
+    domString += `<div id="${movie.watchlistId}" class="card movie-card bg-transparent border-0 p-0 col-3 m-2">`;
+    domString += '<div class="card-title d-flex p-0 m-0 justify-content-center shadow">';
+    domString += `<img src="${movie.imageUrl}" class="card-img-top"/>`;
+    domString += `<span id="watchlist.${movie.id}" class="fa-stack topright watchlist-button off-watchlist">`;
+    domString += `<i class="fas fa-circle fa-stack-2x fa-inverse ${movie.onWatchlist === true ? 'greenBtn' : ''}"></i>`;
+    domString += '<i class="far fa-circle fa-stack-2x"></i>';
+    domString += `<i class="fas ${movie.onWatchlist === true ? 'fa-check' : 'fa-plus'} fa-stack-1x"></i>`;
+    domString += '</span>';
+    domString += '</div>';
+    domString += '<div class="card-body d-flex p-1 justify-content-center align-items-end">';
+    domString += '<fieldset class="rating">';
+    domString += `<input type="radio" id="star5.${movie.id}" name="rating.${movie.id}" value="5" class="ratingButton" ${movie.rating === '5' ? 'checked' : ''} /><label class="full" for="star5.${movie.id}" title="5 stars"></label>`;
+    domString += `<input type="radio" id="star4.${movie.id}" name="rating.${movie.id}" value="4" class="ratingButton" ${movie.rating === '4' ? 'checked' : ''} /><label class="full" for="star4.${movie.id}" title="4 stars"></label>`;
+    domString += `<input type="radio" id="star3.${movie.id}" name="rating.${movie.id}" value="3" class="ratingButton" ${movie.rating === '3' ? 'checked' : ''} /><label class="full" for="star3.${movie.id}" title="3 stars"></label>`;
+    domString += `<input type="radio" id="star2.${movie.id}" name="rating.${movie.id}" value="2" class="ratingButton" ${movie.rating === '2' ? 'checked' : ''} /><label class="full" for="star2.${movie.id}" title="2 stars"></label>`;
+    domString += `<input type="radio" id="star1.${movie.id}" name="rating.${movie.id}" value="1" class="ratingButton" ${movie.rating === '1' ? 'checked' : ''} /><label class="full" for="star1.${movie.id}" title="1 star"></label>`;
+    domString += '</fieldset>';
+    domString += '</div>';
+    domString += '</div>';
+  });
+  util.printToDom('all-movies', domString);
+  eventListeners();
+};
+
+const makeUniqueMovieList = (uid) => {
+  allMoviesData.getAllMovies()
+    .then((allMovies) => {
+      watchlistData.getWatchlistByUid(uid)
+        .then((watchlistMovie) => {
+          const syncedMovies = smash.uniqueMovieView(allMovies, watchlistMovie);
+          printAllMovies(syncedMovies);
+        });
+    })
+    .catch(err => console.error('didnt make unique movie list', err));
+};
+
+export default { makeUniqueMovieList };
